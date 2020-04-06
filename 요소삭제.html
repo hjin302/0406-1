@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<script> 
+var container;
+var wordArray=new Array();//크기를 지정하지 않으면, 현재는 길이0
+                                        //하지만, 고무줄처럼 증가될수있다!!
+
+addEventListener("load", function(){
+    container = document.getElementById("container");
+});
+
+//container 안에 동적 생성된 이미지 요소를 붙여넣자!!
+function create(){
+    var span = document.createElement("span");
+    span.innerText="호랑이\n";
+    wordArray.push(span);
+    container.appendChild(span);    
+
+}   
+//container에 부착된 자식요소 하나를 화면에서 제거하자!!
+
+function removeOne(){
+    if(wordArray.length >0){ //있을때만...
+        container.removeChild(wordArray[0]);
+        wordArray.splice(0 , 1);
+    }
+}
+
+//화면에 존재하는 요소만큼 반복문 실행하면서 지우기!!
+function removeAll(){
+    var n = wordArray.length; //고정 
+
+    for(var i=0;i<n;i++){
+        container.removeChild(wordArray[0]);//화면에서만 제거
+        //배열의 길이도 같이 줄여주자!!
+        wordArray.splice(0,1);
+    }
+}
+</script>
+</head>
+<body>
+    <button onClick="create()">생성</button>    
+    <button onClick="removeOne()">1개삭제</button>
+    <button onClick="removeAll()">모두삭제</button>
+    <div id="container"></div>
+</body>
+</html>

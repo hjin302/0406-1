@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<style>
+body{margin:0px;}
+#wrapper{
+    width:1000px;
+    height:600px;
+    border:1px solid red;
+}   
+#dash{
+    width:150px;
+    height:100%;
+    float:left;
+} 
+#container{
+    width:848px;
+    height:100%;
+    float:left;
+}
+#dash button,select{
+    width:98%;
+    padding:10px;
+    margin-bottom:5px;
+    font-size:17pt;
+}
+#penType{
+    width:150px;
+    height:200px;
+    background-color:yellow;
+}
+
+</style>    
+<script>
+var container;
+var pen;
+var penType;
+var bt_del;
+var bt_play;
+var flag=false;
+var state=0;
+var pointArray=[];
+var index=0;
+
+window.addEventListener("load", function(){
+    container = document.getElementById("container");
+    pen = document.getElementById("pen");
+    penType = document.getElementById("penType");
+    bt_del = document.getElementById("bt_del");
+    bt_play = document.getElementById("bt_play");
+
+    container.addEventListener("mousemove", function(){
+        var x = event.clientX;
+        var y = event.clientY;
+        //console.log(x,y);       
+
+        //this.style.background=(flag)? "white":"black";
+
+        if(state>0){
+            var img = document.createElement("img");
+            img.src="../images/dot.png";
+            img.style.position="absolute";
+            img.style.left=x+"px";
+            img.style.top=y+"px";
+            img.style.width=(pen.value*2)+"px";
+            img.style.height=(pen.value*2)+"px";
+
+            this.appendChild(img);
+            pointArray.push(img);
+        }
+        
+    });
+
+    container.addEventListener("mousedown", function(){
+
+        state++;
+    });
+    
+    container.addEventListener("mouseup", function(){
+        //container.blur();
+        state--;
+    });
+    gameLoop();
+});
+
+function removeAll(obj){
+    obj.disabled=true;
+    bt_play.disabled=false;
+
+    var n = pointArray.length;
+
+    for(var i=0;i<n;i++){
+        container.removeChild(pointArray[i]);//화면에서 제거
+        //pointArray.splice(0,1); //배열에서 제거
+    }
+    flag=false;
+    index=0;
+}
+
+function replay(obj){
+    
+    obj.disabled=true;
+    flag=true;
+}
+
+function play(){
+    if(flag){
+        var img = pointArray[index];
+
+        img.style.left=pointArray[index][0]+"px";
+        img.style.top=pointArray[index][1]+"px";
+        container.appendChild(img);
+        if(index <pointArray.length-1){
+            index++;
+        }else{
+            bt_del.disabled=false;
+        }
+        
+        //console.log(index);
+    }
+
+}
+
+function createPen(){
+    var imgArray=[
+        "../images/pica.png",
+        "../images/gear.png",
+        "../images/smile.png",
+        "../images/dot.png",
+        "../images/b.png"
+    ];
+
+    for(var i=0;i<imgArray.length;i++){
+        var img = document.createElement("img");
+        img.src=imgArray[i];
+    }
+}
+
+function gameLoop(){    
+    setInterval("play()",10);
+}
+</script>    
+</head>
+<body>
+    <div id="wrapper">
+        <div id="dash">
+            <button id="bt_del" onClick="removeAll(this)">지우기</button>
+            <button id="bt_play" onClick="replay(this)">재생</button>
+            <select id="pen">
+                <option value="1">연필두께</option>
+                <option value="1">x1</option>
+                <option value="2">x2</option>
+                <option value="3">x3</option>
+                <option value="4">x4</option>
+            </select>
+            <div id="penType"></div>
+        </div>
+        <div id="container"></div>
+    </div>    
+</body>
+</html>
+
+
+
+

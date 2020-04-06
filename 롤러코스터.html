@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>이차원 배열은 데이터베이스다!!</title>
+<style>
+body{margin:0px;}
+
+#wrapper{
+    width:1150px;
+    height:600px;
+}    
+#container{
+    position: relative;
+    width:1000px;
+    height:600px;
+    background-image: url("../images/roll/roller.png");
+    background-size:1000px 600px;/*백그라운트 크기 억지로 늘림*/
+    float:left;
+}   
+#info{
+    width:150px;
+    height:600px;
+    background:yellow;
+    float:left;
+    overflow:scroll;
+}
+#mario{
+    width:40px;
+    position: absolute;
+    left:0px;
+    top:0px;
+}
+</style>    
+<script>
+var container;
+var info;
+var mario;
+var posArray=[]; //점배열을 담게될 배열!!!
+var index=0;
+
+window.addEventListener("load", function(){
+    container=document.getElementById("container");
+    info=document.getElementById("info");
+    mario=document.getElementById("mario");
+
+    //container에 대해 마우스를 누르면, 좌표 구하기!!
+    container.addEventListener("click", function(){
+        var x = event.clientX;
+        var y = event.clientY;
+        //console.log("x=",x, "y=",y);
+        //하나의 점을 담게될 일차원 배열생성 !!
+        var pos=[x, y];//길이가 2인 일차원 배열 생성!!!
+        posArray.push(pos); //이차원 배열에 탑재!!
+
+        info.innerText += "x축:"+x+", y축:"+y+"\n"; //문자열 누적!!   
+
+        //화면에 점 찍기!!
+        createPoint(x, y);        
+    });
+});
+
+function createPoint(posX, posY){
+    var span=document.createElement("span");
+    span.innerText="●"; //이미지 아님!!글씨임!!
+    span.style.fontSize="4px";
+    span.style.color="red";
+    span.style.position="absolute";
+    span.style.left=posX+"px";
+    span.style.top=posY+"px";
+    //container에 붙이기!!
+    container.appendChild(span);
+}
+
+//마리오는 사용자가 찍은 좌표를 하나씩 거쳐가야 한다!!
+function start(){
+    mario.style.left=posArray[index][0]+"px";
+    mario.style.top=posArray[index][1]+"px";
+
+    index++; //큰 배열의 다음 요소를 접근하기 위해 인덱스 증가!!
+
+    setTimeout("start()",300);
+}
+</script>    
+</head>
+<body>
+    <div id="wrapper">    
+        <div id="container">
+            <img id="mario" src="../images/roll/mario.png"/>
+        </div>    
+        <div id="info"></div>
+    </div>
+    <button onClick="start()">출발!!</button>
+</body>
+</html>

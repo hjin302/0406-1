@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<script>
+var topCategory;
+var subCategory;
+var topArray=["상의","하의","액세서리","신발"];
+var subArray=[
+    ["가디건","티셔츠","맨투맨","점퍼"], // 0
+    ["면바지","반바지","청바지","치마"], // 1
+    ["귀걸이","목걸이","시계","반지"], // 2
+    ["구두","운동화","슬리퍼","샌들"] // 3
+];
+
+window.addEventListener("load", function(){
+    topCategory = document.getElementById("topCategory");
+    subCategory = document.getElementById("subCategory");
+
+    createTop();
+
+    topCategory.addEventListener("change", function(){
+        //alert("당신이 선택한 아이템의 값은 "+this.value);
+        console.log("당신이 원하는 하위 아이템은 ", subArray[this.value]);
+
+        createSub(this.value);//상위 카테고리 값을 전달하자!!
+        //왜?? 유저가 선택한 아이템이 무엇인지 알아야 하위목록을 
+        //생성하므로..
+    });
+});  
+//쇼핑몰의 최상위 카테고리 목록을 동적으로 생성해보자!!  
+function createTop(){
+    var option = document.createElement("option");
+    option.text="카테고리 선택";
+    topCategory.add(option);
+
+    for(var i=0;i<topArray.length;i++){
+        var op = document.createElement("option");
+        op.text=topArray[i];
+        op.value=i;
+        topCategory.add(op);//select box 에 추가!!
+
+    }
+}
+
+function createSub(index){ //상위의 값을 가져오자!!
+    //자꾸 누적되므로, 기존에 존재하던 옵션들은 모두 제거해야 한다
+    var n =subArray[index].length;
+    //0번째를 지워야 하는 이유는?
+    //배열이 지워지면 index 의 순번이 전체적으로 변경되므로...
+    for(var i=0; i<n;i++){
+        subCategory.remove(0);
+    }
+
+
+    //alert("당신이 선택한 상위의 아이템 값은 "+index);
+    for(var i=0;i<subArray[index].length;i++){
+        var op = document.createElement("option");
+        op.text=subArray[index][i];
+        subCategory.add(op); //서브 셀렉트 박스에 부착!!
+    }
+}
+</script>    
+</head>
+<body>
+<select id="topCategory"></select>    
+<select id="subCategory"></select>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
